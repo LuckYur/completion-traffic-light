@@ -12,8 +12,20 @@ using System.Runtime.InteropServices;
 public class DshActivate {
   [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
   [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+  [DllImport("user32.dll")] public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+  [DllImport("user32.dll")] public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 }
 "@
+
+# 让窗口不出现在 Alt+Tab 与任务栏：加上 WS_EX_TOOLWINDOW、去掉 WS_EX_APPWINDOW
+function Hide-FromSwitcher {
+  try {
+    $ex = [DshActivate]::GetWindowLong($form.Handle, -20)
+    $ex = ($ex -band (-bnot 0x40000)) -bor 0x80
+    [void][DshActivate]::SetWindowLong($form.Handle, -20, $ex)
+  } catch {
+  }
+}
 
 # 窗口不透明度：1.0 = 完全不透明，0.85 = 略透出背景。改这一行即可。
 $windowOpacity = 0.85
@@ -286,6 +298,7 @@ $timer.Add_Tick({
 $timer.Start()
 
 $form.Add_Shown({
+  Hide-FromSwitcher
   Update-Region
   Update-Visual
 })
