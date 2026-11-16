@@ -1,0 +1,3 @@
+- insert:
+    - id: completion-traffic-light
+      name: 'dsh-completion-traffic-light'

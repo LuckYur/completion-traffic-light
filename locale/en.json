@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Completion traffic light",
+    "description": "Shows red, amber, or green under the composer for the current session: working, waiting for you, or finished."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "dsh-completion-traffic-light",
+  "version": "1.0.0",
+  "description": "Traffic light under the composer that reports whether the current task is running, waiting for you, or finished.",
+  "author": "LuckYur",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuckYur/completion-traffic-light.git"
+  },
+  "homepage": "https://github.com/LuckYur/completion-traffic-light#readme",
+  "type": "module",
+  "license": "MIT",
+  "keywords": ["dsh-plugin", "dsh", "traffic-light", "desktop", "notification"],
+  "engines": { "dsh": ">=0.2.0" },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": ["index.js", "client.js", "float-window.ps1", "cordis.patch.yml", "locale/*.json", "icon.svg", "assets", "README.md", "LICENSE"],
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  }
+}
