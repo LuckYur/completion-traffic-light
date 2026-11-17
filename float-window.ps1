@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 public class DshActivate {
   [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
   [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+  [DllImport("user32.dll")] public static extern bool IsIconic(IntPtr hWnd);
   [DllImport("user32.dll")] public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
   [DllImport("user32.dll")] public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 }
@@ -59,8 +60,12 @@ function Activate-App {
       Where-Object { $_.MainWindowHandle -ne 0 } |
       Select-Object -First 1
     if ($null -eq $app) { return }
-    [void][DshActivate]::ShowWindow($app.MainWindowHandle, 9)
-    [void][DshActivate]::SetForegroundWindow($app.MainWindowHandle)
+    $handle = $app.MainWindowHandle
+    # 只在最小化时还原，避免把最大化窗口缩回普通大小
+    if ([DshActivate]::IsIconic($handle)) {
+      [void][DshActivate]::ShowWindow($handle, 9)
+    }
+    [void][DshActivate]::SetForegroundWindow($handle)
   } catch {
   }
 }
