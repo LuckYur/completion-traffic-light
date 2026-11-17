@@ -1,6 +1,6 @@
 {
   "name": "dsh-completion-traffic-light",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Traffic light under the composer that reports whether the current task is running, waiting for you, or finished.",
   "author": "LuckYur",
   "repository": {
